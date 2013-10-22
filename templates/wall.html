@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Wall Posts for {{username}}</title>
+        <link href="/static/css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>{{username}}</h1>
+        <h3>Posts:</h3>
+        <div class="container">
+
+            {% for post in posts %}
+            <div>
+                Author: {{post[0]}}
+                Created at: {{post[1]}}
+                Content:  {{post[2]}}
+            </div>
+            {% endfor %}
+
+            {% if session.get("username"): %}
+            <form action="/post_to_wall" method="POST">
+                <label for"username" type="hidden"></label>
+                <label for="newPost"></label>
+                <input type="text" name="newPost"/>
+                <input type="submit"/>
+            </form>
+            {% endif %}
+        </div>
+    </body>
+</html>

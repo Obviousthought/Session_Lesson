@@ -14,18 +14,19 @@ def get_user_by_name(username):
     DB.execute(query, (username,))
     row = DB.fetchone()
     CONN.close()
-    return row
+    return row[0]
 
 def authenticate(username, password):
     connect_to_db()
 
+
     query = """SELECT id FROM users WHERE username = ? and password = ?"""
-    DB.execute(query, (username, password))
+    DB.execute(query, (username, hash(password)))
     row = DB.fetchone()
 
     CONN.close()
 
-    return row    
+    return row[0]    
 
 def getPosts(ownerId):
     connect_to_db()
@@ -41,7 +42,9 @@ def make_post(owner_id, author_id, text):
     connect_to_db()
     query= """INSERT INTO wall_posts (owner_id, author_id, create_at, content) values (?, ?, CURRENT_TIMESTAMP, ?)"""
     DB.execute(query, (owner_id, author_id, text))
+    CONN.commit()
     CONN.close()
+    return True
 
     # if username == ADMIN_USER and hash(password) == ADMIN_PASSWORD:
     #     return True

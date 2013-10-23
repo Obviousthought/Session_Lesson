@@ -4,26 +4,36 @@
         <link href="/static/css/main.css" rel="stylesheet">
     </head>
     <body>
-        <h1>{{username}}</h1>
-        <h3>Posts:</h3>
         <div class="container">
-
-            {% for post in posts %}
             <div>
-                Author: {{post[0]}}
-                Created at: {{post[1]}}
-                Content:  {{post[2]}}
+                <form action="/logout", method="GET">
+                    <button name="Logout">Logout</button>
+                </form>
             </div>
-            {% endfor %}
+            <div>
+                <h1>User: {{username}}</h1>
+                <h2>Posts:</h2>
+                {% for post in posts %}
+                <div>
+                    Author: {{post[0]}}
+                    Created at: {{post[1]}}
+                    Content:  {{post[2]}}
+                </div>
+                {% endfor %}
 
-            {% if session.get("username"): %}
-            <form action="/post_to_wall" method="POST">
-                <label for"username" type="hidden"></label>
-                <label for="newPost"></label>
-                <input type="text" name="newPost"/>
-                <input type="submit"/>
-            </form>
-            {% endif %}
+                {% if session.get("username"): %}
+                <div>
+                    <h2>New Post:</h2>
+                    <form action="/user/{{username}}" method="POST">
+                        <label for="username"></label>
+                        <input type="hidden" name="username" value="{{username}}"/>
+                        <label for="newPost"></label>
+                        <textarea name="newPost" class = "form-control"></textarea>
+                        <input type="submit" value="Post">
+                    </form>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </body>
 </html>

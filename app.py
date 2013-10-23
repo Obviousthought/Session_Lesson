@@ -18,13 +18,17 @@ def process_login():
         session['username'] = user_id
     else:
         flash("Password incorrect, there may be a ferret stampede in progress!")
-        return redirect("index")
+        return redirect(url_for("index"))
 
     return redirect("/user/%s"%username)
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    if session.get("username"):
+        username = model.get_name_by_id(session.get("username"))
+        return redirect(url_for("view_user", username=username))
+    else:
+        return render_template("register.html")
 
 @app.route("/logout")
 def logout():
@@ -52,6 +56,10 @@ def post_on_wall(username):
     
     model.make_post(ownerId, user_id, text)
     return redirect("/user/%s"%username)
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)

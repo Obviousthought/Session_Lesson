@@ -14,7 +14,19 @@ def get_user_by_name(username):
     DB.execute(query, (username,))
     row = DB.fetchone()
     CONN.close()
-    return row[0]
+    if row:
+        return row[0]
+    return None
+
+def get_name_by_id(userid):
+    connect_to_db()
+    query = """SELECT username FROM users WHERE id = ?"""
+    DB.execute(query, (userid,))
+    row = DB.fetchone()
+    CONN.close()
+    if row:
+        return row[0]
+    return None
 
 def authenticate(username, password):
     connect_to_db()
@@ -25,8 +37,9 @@ def authenticate(username, password):
     row = DB.fetchone()
 
     CONN.close()
-
-    return row[0]    
+    if row:
+        return row[0]    
+    return None
 
 def getPosts(ownerId):
     connect_to_db()
